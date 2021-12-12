@@ -6,11 +6,10 @@ Plug 'terroo/vim-simple-emoji'
 
 " Aqui vão os plugins
 Plug 'matsuuu/pinkmare'
-if( extensao == "cpp" || extensao == "cc" || extensao == "h" || extensao == "hpp" ) 
-Plug 'ycm-core/YouCompleteMe'
-else
 Plug 'zxqfl/tabnine-vim'
-endif
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'sainnhe/sonokai'
 Plug 'jiangmiao/auto-pairs'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -27,13 +26,35 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'preservim/nerdcommenter'
 Plug 'mattn/emmet-vim'
 Plug 'sheerun/vim-polyglot'
+if (has("nvim"))
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim'
+endif
 call plug#end()
 
 " TEMA DE CORES
 "colorscheme pinkmare
-colorscheme dracula
+"colorscheme dracula
 hi! MatchParen cterm=NONE,bold gui=NONE,bold guibg=NONE guifg=#FFFF00
 
+" Themes 
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
+let g:sonokai_style = 'andromeda'
+let g:sonokai_enable_italic = 1
+let g:sonokai_disable_italic_comment = 0
+let g:sonokai_diagnostic_line_highlight = 1
+let g:sonokai_current_word = 'bold'
+colorscheme sonokai
+
+if (has("nvim")) "Transparent background. Only for nvim
+    highlight Normal guibg=NONE ctermbg=NONE
+    highlight EndOfBuffer guibg=NONE ctermbg=NONE
+endif
 " CONFIGS RECOMENDADAS
 syntax on
 set nu!
@@ -43,8 +64,26 @@ set cursorline
 set smartindent
 set history=5000
 set clipboard=unnamedplus
-set tabstop=2 softtabstop=2 expandtab shiftwidth=2
+set tabstop=4 softtabstop=4 expandtab shiftwidth=2
+set smarttab
+set hidden
+set smartcase
+set ignorecase
+set scrolloff=8
+set colorcolumn=100
+set signcolumn=yes
+set cmdheight=2
+set updatetime=100
+set nobackup
+set nowritebackup
+set splitright
+set splitbelow
+set autoread
+set foldmethod=syntax
 set foldlevel=99
+filetype on
+filetype plugin on
+filetype indent on
 nnoremap <space> za
 
 let g:indentLine_enabled = 1
@@ -60,19 +99,6 @@ set guifont=Anonymice\ Nerd\ Font\ Mono:h12
 map q :quit<CR>
 map <C-s> :w<CR>
 
-" YOUCOMPLETEME
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-set completeopt-=preview
-let g:ycm_show_diagnostics_ui = 0
-let g:ycm_clangd_args=['--header-insertion=never']
-let g:ycm_language_server =
-  \ [{
-  \   'name': 'ccls',
-  \   'cmdline': [ 'ccls' ],
-  \   'filetypes': [ 'c', 'cpp', 'cc', 'h', 'hpp' ],
-  \   'project_root_files': [ '.ccls-root', 'compile_commands.json' ]
-  \ }]
-
 
 " UTILSNIPS
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -87,8 +113,8 @@ set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline_statusline_ontop=0
-let g:airline_theme = 'dracula'
-
+"let g:airline_theme = 'dracula'
+let g:airline_theme = 'sonokai'
 let g:airline#extensions#tabline#formatter = 'default'
 " navegação entre os buffers
 nnoremap <M-Right> :bn<cr>
@@ -96,6 +122,8 @@ nnoremap <M-Left> :bp<cr>
 nnoremap <c-x> :bp\|bd #<cr>
 
 " powerline symbols
+
+let g:airline_symbols = {}
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
@@ -117,5 +145,6 @@ filetype plugin on
 let g:NERDSpaceDelims = 1
 let g:NERDDefaultAlign = 'left'
 map cc <Plug>NERDCommenterInvert
+
 
 
